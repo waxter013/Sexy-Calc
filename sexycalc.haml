@@ -1,0 +1,52 @@
+!!!
+/ TODO: Hover color change for backspace and gray buttons. Color change on click.
+/ TODO: Add touch compatability
+/ Add keyboard button supprt
+/ TODO: Add separate css for desktop. Have a header, some info, add keywords/SEO stuff, ads on both sides
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Sexy Calc
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
+    %link{:href => "css/sexycalc.css", :rel => "stylesheet", :type => "text/css"}/
+    / normalize.css?
+    %link{:href => "https://fonts.googleapis.com/css?family=Roboto", :rel => "stylesheet"}
+  %body
+    #calculator.col
+      / Contains Solution and full Equation
+      #solutionContainer.row
+        #display.col
+          %input#equation.row{:name => "equation", :type => "text", :value => "", :readonly => "readonly"}/
+          %input#solution.row{:name => "solution", :type => "text", :value => "0", :readonly => "readonly"}/
+        %input#backspaceButton.col.button{:name => "backspace", :type => "button", :value => "X"}/
+      / Contains all calculator functionallity
+      %form#buttonsContainer.row.col
+        #clear.col
+          %input.button{:name => "clear", :type => "button", :value => "Clear All"}/
+        #mainCol.col
+          #specialOperators.row
+            %input.button.col-1{:name => "percent", :type => "button", :value => "%"}/
+            %input.button.col-1{:name => "squareRoot", :type => "button", :value => "sqrt"}/
+            %input.button.col-1{:name => "squared", :type => "button", :value => "^2"}/
+          #7_8_9_Container.row
+            %input.button.col-1{:name => "seven", :type => "button", :value => "7"}/
+            %input.button.col-1{:name => "eight", :type => "button", :value => "8"}/
+            %input.button.col-1{:name => "nine", :type => "button", :value => "9"}/
+          #4_5_6_Container.row
+            %input.button.col-1{:name => "four", :type => "button", :value => "4"}/
+            %input.button.col-1{:name => "five", :type => "button", :value => "5"}/
+            %input.button.col-1{:name => "six", :type => "button", :value => "6"}/
+          #1_2_3_Container.row
+            %input.button.col-1{:name => "one", :type => "button", :value => "1"}/
+            %input.button.col-1{:name => "two", :type => "button", :value => "2"}/
+            %input.button.col-1{:name => "three", :type => "button", :value => "3"}/
+          .row{:id => "0_._Container"}
+            %input.button.col-2{:name => "zero", :type => "button", :value => "0"}/
+            %input.button.col-1{:name => "decimalPoint", :type => "button", :value => "."}/
+        #operatorsCol.col
+          %input.button.row{:name => "divide", :type => "button", :value => "/"}/
+          %input.button.row{:name => "multiply", :type => "button", :value => "*"}/
+          %input.button.row{:name => "subtract", :type => "button", :value => "-"}/
+          %input.button.row{:name => "add", :type => "button", :value => "+"}/
+          %input.button.row{:name => "equals", :type => "button", :value => "="}/
+    %script{:src => "js/sexycalc.js", :type => "text/javascript"}

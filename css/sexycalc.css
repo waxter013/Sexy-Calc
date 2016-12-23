@@ -26,7 +26,7 @@ body * {
 	background-color: #EA3C79;
 }
 
-#displaySolution {	
+#display {	
 	height: 100%;
 	width: 75%;
 	text-align: right;
@@ -108,9 +108,8 @@ body * {
 .button {
 	height: 100%;
 	text-align: center;
-	font-size: 1em;
 	background-color: #EA1C64;
-	font-size: 1.5em;
+	font-size: 2em;
 	outline: none;
 }
 
