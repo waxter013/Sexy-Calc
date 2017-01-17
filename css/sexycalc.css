@@ -1,154 +1,186 @@
 html, body {
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	height: 100%;
-}
+  width: 100%;
+  height: 100%;
+  margin: 0; }
 
-body * {
-	font-family: 'Roboto', Arial, sans-serif;
-	color: white;
-	font-weight: 700;
-	padding: 0;
-	margin: 0;
-}
-/*Calculator container <div>*/
-#calculator {
-	width: 100%;
-	height: 100%;
-	margin: 0 auto;
-}
+.bttn {
+  height: 100%;
+  text-align: center;
+  outline: none;
+  float: left;
+  color: white;
+  cursor: pointer; }
 
-/*Solutions*/
-#solutionContainer {
-	width: 100%;
-	height: 10%;
-	background-color: #EA3C79;
-}
+input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: 'Lobster', Helvetica, Arial, sans-serif; }
 
-#displaySolution {	
-	height: 100%;
-	width: 75%;
-	text-align: right;
-}
+.loading {
+  height: 100%;
+  width: 100%;
+  -webkit-animation: loading 2s;
+  animation: loading 2s;
+  background: #DF165C; }
+  .loading h1 {
+    position: absolute;
+    z-index: 1;
+    font-size: 4rem;
+    top: calc(50% - 6rem);
+    left: calc(50% - 7.3rem);
+    font-family: 'Lobster', Helvetica, Arial, sans-serif;
+    color: white;
+    -webkit-animation: pulse 1.5s;
+    animation: pulse 1.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite; }
 
-#equation {
-	font-size: 1.1em;
-	padding-top: 0.2em;
-	text-align: right;
-	color: #E0E0E0;
-	float: right;
-	width: 100%;
-	height: 25%;
-	font-weight: bold;
-	padding-right: 0.3em;
-	background-color: #EA3C79;
-}
+.calculator {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  color: white;
+  font-weight: 700; }
+  .calculator .solutionContainer {
+    width: 100%;
+    height: 10%;
+    background-color: #D33976;
+    min-height: 3.8em; }
+    .calculator .solutionContainer .display {
+      height: calc(100%);
+      width: 75%;
+      float: left; }
+      .calculator .solutionContainer .display .equation {
+        height: 1rem;
+        width: calc(100% - 0.4rem);
+        min-height: 1em;
+        padding: 0.2rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: right;
+        color: #E0E0E0;
+        background-color: #D33976;
+        overflow: auto; }
+      .calculator .solutionContainer .display .solution {
+        height: 2.2rem;
+        width: calc(100% - 0.4rem);
+        min-height: 1em;
+        padding: 0.2rem;
+        font-size: 2.2rem;
+        font-weight: bold;
+        text-align: right;
+        color: white;
+        background-color: #D33976;
+        overflow: auto; }
+    .calculator .solutionContainer .backspaceButton {
+      height: 100%;
+      width: 25%;
+      float: right;
+      background-color: #D32C66;
+      font-weight: bold;
+      font-size: 1.5em;
+      -webkit-transition: background-color 0.3s;
+      -moz-transition: background-color 0.3s;
+      -o-transition: background-color 0.3s;
+      transition: background-color 0.3s; }
+    .calculator .solutionContainer .backspaceButton:hover {
+      background-color: #DF165C; }
+  .calculator .buttonsContainer {
+    width: 100%;
+    height: 90%;
+    background-color: #48544D; }
+    .calculator .buttonsContainer .clearCol {
+      width: 100%;
+      height: 10%; }
+      .calculator .buttonsContainer .clearCol .bttn {
+        height: 100%;
+        width: 100%;
+        background-color: #F48942;
+        -webkit-transition: background-color 0.3s;
+        -moz-transition: background-color 0.3s;
+        -o-transition: background-color 0.3s;
+        transition: background-color 0.3s; }
+      .calculator .buttonsContainer .clearCol .bttn:hover {
+        background-color: #F47D2E; }
+    .calculator .buttonsContainer .mainCol {
+      width: 75%;
+      height: 90%;
+      float: left; }
+      .calculator .buttonsContainer .mainCol .mainRow {
+        height: 20%;
+        width: 100%; }
+        .calculator .buttonsContainer .mainCol .mainRow .bttn {
+          height: 100%;
+          width: 33.33%;
+          background-color: #D33976;
+          -webkit-transition: background-color 0.3s;
+          -moz-transition: background-color 0.3s;
+          -o-transition: background-color 0.3s;
+          transition: background-color 0.3s; }
+        .calculator .buttonsContainer .mainCol .mainRow .bttn:hover {
+          background-color: #D32C66; }
+      .calculator .buttonsContainer .mainCol .mainRow.specialOperators .bttn {
+        background-color: #58635D;
+        -webkit-transition: background-color 0.3s;
+        -moz-transition: background-color 0.3s;
+        -o-transition: background-color 0.3s;
+        transition: background-color 0.3s; }
+      .calculator .buttonsContainer .mainCol .mainRow.specialOperators .bttn:hover {
+        background-color: #48544D; }
+      .calculator .buttonsContainer .mainCol .mainRow:nth-child(5) .bttn:nth-child(1) {
+        width: 66.66%; }
+    .calculator .buttonsContainer .operatorsCol {
+      width: 25%;
+      height: 90%;
+      float: left; }
+      .calculator .buttonsContainer .operatorsCol .bttn {
+        height: 20%;
+        width: 100%;
+        background-color: #48544D;
+        -webkit-transition: background-color 0.3s;
+        -moz-transition: background-color 0.3s;
+        -o-transition: background-color 0.3s;
+        transition: background-color 0.3s; }
+      .calculator .buttonsContainer .operatorsCol .bttn:hover {
+        background-color: #343434; }
 
-#solution {
-	font-size: 2.2em;
-	outline: none;
-	text-align: right;
-	float: right;
-	width: 100%;
-	height: 75%;
-	font-weight: bold;
-	padding-right: 0.3em;
-	background-color: #EA3C79;
-}
+@media (min-width: 20em) {
+  .calculator .bttn {
+    font-size: 1.6rem;
+    min-height: 2.3rem; } }
 
-#backspaceButton {
-	width: 25%;
-	float: right;
-	background-color: #D5376E;
-	font-weight: bold;
-	font-size: 1.5em;
-}
+@media (min-width: 48em) {
+  .calculator .bttn {
+    font-size: 1.7rem;
+    min-height: 2.4rem; } }
 
+@media (min-width: 64em) {
+  .calculator .bttn {
+    font-size: 2.3rem;
+    min-height: 3rem; } }
 
-/*Buttons*/
-#buttonsContainer {
-	width: 100%;
-	height: 90%;
-	background-color: #48544D;
-}
+/* Pulse originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05); }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); } }
 
-#clear {
-	width: 100%;
-	height: 10%;
-}
-
-#clear > input {
-	background-color: #F48942	;
-}
-
-#mainCol {
-	width: 75%;
-	height: 90%;
-}
-
-#mainCol > div {
-	height: 20%;
-}
-
-#operatorsCol {
-	width: 25%;
-	height: 90%;
-}
-
-#operatorsCol > input {
-	height: 20%;
-	background-color: #48544D;
-}
-
-#specialOperators > input {
-	background-color: #58635D;
-}
-
-.button {
-	height: 100%;
-	text-align: center;
-	font-size: 1em;
-	background-color: #EA1C64;
-	font-size: 1.5em;
-	outline: none;
-}
-
-.button:hover {
-	background-color: #FF1744;
-}
-
-
-/*Grid System of 3*/
-.col-1 {
-	width: 33.33%;
-}
-
-.col-2 {
-	width: 66.66%
-}
-
-.col {
-	height: 100%;
-}
-
-.col > * {
-	float: left;
-}
-
-.col > input {
-	width: 100%;
-	border: none;
-}
-
-.row {
-	width: 100%;
-}
-
-.row > * {
-	float: left;
-}
-
-.row > input {
-	border: none;
-}
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); }
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05); }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1); } }

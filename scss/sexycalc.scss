@@ -1,0 +1,261 @@
+$main: #D33976;
+$mainDark: #D32C66;
+$mainDarker: #DF165C;
+$secondary: #58635D;
+$secondaryDark: #48544D;
+$secondaryDarker: #343434;
+$accent: #F48942;
+$accentDark: #F47D2E;
+
+$speed: 0.3s;
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.bttn {
+  height: 100%;
+  text-align: center;
+  outline: none;
+  float: left;
+  color: white;
+  cursor: pointer;
+
+}
+input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: 'Lobster', Helvetica, Arial, sans-serif;
+}
+
+.loading {
+  height: 100%;
+  width: 100%;
+  animation: loading 2s;
+  background: $mainDarker;
+
+  h1 {
+    position: absolute;
+    z-index: 1;
+    font-size: 4rem;
+    top: calc(50% - 6rem);
+    left: calc(50% - 7.3rem);
+    font-family: 'Lobster', Helvetica, Arial, sans-serif;
+    color: white;
+    -webkit-animation: pulse 1.5s;
+    animation: pulse 1.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+  }
+}
+
+.calculator {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  color: white;
+  font-weight: 700;
+
+  .solutionContainer {
+    width: 100%;
+    height: 10%;
+    background-color: $main;
+    min-height: 3.8em;
+     
+    .display {  
+      height: calc(100%);
+      width: 75%;
+      float: left;
+
+      .equation {
+        height: 1rem;
+        width: calc(100% - 0.4rem);
+        min-height: 1em;
+        padding: 0.2rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-align: right;
+        color: #E0E0E0;
+        background-color: $main;
+        overflow: auto;
+      }
+      .solution {
+        height: 2.2rem;
+        width: calc(100% - 0.4rem);
+        min-height: 1em;
+        padding: 0.2rem;
+        font-size: 2.2rem;
+        font-weight: bold;
+        text-align: right;
+        color: white;
+        background-color: $main;
+        overflow: auto;
+      }
+    }
+    .backspaceButton {
+      height: 100%;
+      width: 25%;
+      float: right;
+      background-color: $mainDark;
+      font-weight: bold;
+      font-size: 1.5em;
+      -webkit-transition: background-color $speed;
+      -moz-transition: background-color $speed;
+      -o-transition: background-color $speed;
+      transition: background-color $speed;
+    }
+    .backspaceButton:hover {
+      background-color: $mainDarker;
+    }
+  }
+  .buttonsContainer {
+    width: 100%;
+    height: 90%;
+    background-color: $secondaryDark;
+
+    .clearCol {
+      width: 100%;
+      height: 10%;
+
+      .bttn {
+        height: 100%;
+        width: 100%;
+        background-color: $accent;
+        -webkit-transition: background-color $speed;
+        -moz-transition: background-color $speed;
+        -o-transition: background-color $speed;
+        transition: background-color $speed;
+      }
+      .bttn:hover {
+        background-color: $accentDark;
+      }
+    }
+    .mainCol {
+      width: 75%;
+      height: 90%;
+      float: left;
+
+      .mainRow {
+        height: 20%;
+        width: 100%;
+        
+        .bttn {
+          height: 100%;
+          width: 33.33%;
+          background-color: $main;
+          -webkit-transition: background-color $speed;
+          -moz-transition: background-color $speed;
+          -o-transition: background-color $speed;
+          transition: background-color $speed;
+        }
+        .bttn:hover {
+          background-color: $mainDark;
+        }
+      }
+      .mainRow.specialOperators {
+        .bttn {
+          background-color: $secondary;
+          -webkit-transition: background-color $speed;
+          -moz-transition: background-color $speed;
+          -o-transition: background-color $speed;
+          transition: background-color $speed;
+        }
+        .bttn:hover {
+          background-color: $secondaryDark;
+        }
+      }
+      .mainRow:nth-child(5) {
+        .bttn:nth-child(1) {
+          width: 66.66%;
+        }
+      }
+    }
+    .operatorsCol {
+      width: 25%;
+      height: 90%;
+      float: left;
+
+      .bttn {
+        height: 20%;
+        width: 100%;
+        background-color: $secondaryDark;
+        -webkit-transition: background-color $speed;
+        -moz-transition: background-color $speed;
+        -o-transition: background-color $speed;
+        transition: background-color $speed;
+      }
+      .bttn:hover {
+        background-color: $secondaryDarker;
+      }
+    } 
+  }
+}
+@media (min-width: 20em) {
+  .calculator {
+    .bttn {
+      font-size: 1.6rem;
+      // font-size: 4.75vw;
+      min-height: 2.3rem;
+    }
+  }
+}
+@media (min-width: 48em) {
+  .calculator {
+    .bttn {
+      font-size: 1.7rem;
+      // font-size: 3.75vw;
+      min-height: 2.4rem;
+    }
+  }
+}
+@media (min-width: 64em) {
+  .calculator {
+    .bttn {
+      font-size: 2.3rem;
+      // font-size: 3.8vw;
+      min-height: 3rem;
+    }
+  }
+}
+
+//Animations
+/* Pulse originally authored by Nick Pettit - https://github.com/nickpettit/glide */
+
+@-webkit-keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes pulse {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05);
+    transform: scale3d(1.05, 1.05, 1.05);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
