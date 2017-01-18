@@ -19,7 +19,12 @@
       ga('send', 'pageview');
   %body
     %section.loading
-      %h1 Sexy Calc
+      %h1.logo Sexy Calc
+      .beta Beta
+      .share.addthis_inline_share_toolbox
+      .credits
+        By
+        %a.link{:target=>"_blank", :href=>"http://deepduggal.me"} Deep Duggal
     %section.calculator
       / Contains Solution and full Equation
       .solutionContainer
@@ -30,12 +35,12 @@
       / Contains all calculator functionallity
       %form.buttonsContainer
         .clearCol
-          %input.bttn{:name => "clear", :type => "button", :value => "Clear All"}/
+          %input.bttn{:name => "clear", :type => "button", :value => "Clear"}/
         .mainCol
           .mainRow.specialOperators
             %input.bttn{:name => "percent", :type => "button", :value => "%"}/
-            %input.bttn{:name => "squareRoot", :type => "button", :value => "sqrt"}/
-            %input.bttn{:name => "squared", :type => "button", :value => "^2"}/
+            %input.bttn{:name => "squareRoot", :type => "button", :value => "√"}/
+            %input.bttn{:name => "squared", :type => "button", :value => "x²"}
           .mainRow
             %input.bttn{:name => "seven", :type => "button", :value => "7"}/
             %input.bttn{:name => "eight", :type => "button", :value => "8"}/
@@ -58,3 +63,5 @@
           %input.bttn{:name => "add", :type => "button", :value => "+"}/
           %input.bttn{:name => "equals", :type => "button", :value => "="}/
     %script{:src => "js/sexycalc-dist.js", :type => "text/javascript"}
+    %script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-587ef328a237144a", :type => "text/javascript"}
+

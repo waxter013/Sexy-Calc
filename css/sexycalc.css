@@ -1,7 +1,12 @@
 html, body {
   width: 100%;
   height: 100%;
-  margin: 0; }
+  margin: 0;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; }
 
 .bttn {
   height: 100%;
@@ -20,23 +25,52 @@ input {
 .loading {
   height: 100%;
   width: 100%;
-  -webkit-animation: loading 2s;
-  animation: loading 2s;
-  background: #DF165C; }
+  background: #DF165C;
+  font-family: 'Lobster', Helvetica, Arial, sans-serif;
+  color: white; }
   .loading h1 {
+    margin: 0;
     position: absolute;
-    z-index: 1;
     font-size: 4rem;
-    top: calc(50% - 6rem);
+    top: calc(50% - 4rem);
     left: calc(50% - 7.3rem);
-    font-family: 'Lobster', Helvetica, Arial, sans-serif;
-    color: white;
     -webkit-animation: pulse 1.5s;
     animation: pulse 1.5s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
     -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    cursor: pointer; }
+  .loading .beta {
+    position: absolute;
+    top: calc(50% + 0.2em);
+    left: calc(50% + 5.5rem);
+    font-size: 1.5rem;
+    color: black;
+    -webkit-animation: pulse 3s;
+    animation: pulse 3s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite; }
+  .loading .share {
+    position: absolute;
+    bottom: 0.3rem;
+    left: 0.3rem;
+    -webkit-animation: appear 2s;
+    animation: appear 2s; }
+  .loading .credits {
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.3rem;
+    -webkit-animation: appear 2s;
+    animation: appear 2s; }
+    .loading .credits .link {
+      cursor: pointer; }
+    .loading .credits .link:hover {
+      color: white;
+      -webkit-transition: color 1s;
+      transition: color 1s; }
 
 .calculator {
   height: 100%;
@@ -147,6 +181,10 @@ input {
       .calculator .buttonsContainer .operatorsCol .bttn:hover {
         background-color: #343434; }
 
+.bttn:active {
+  color: black;
+  font-size: 0.5rem; }
+
 @media (min-width: 20em) {
   .calculator .bttn {
     font-size: 1.6rem;
@@ -184,3 +222,15 @@ input {
   to {
     -webkit-transform: scale3d(1, 1, 1);
     transform: scale3d(1, 1, 1); } }
+
+@-webkit-keyframes appear {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes appear {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }

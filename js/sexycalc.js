@@ -10,9 +10,8 @@
   TODO: 
     - Fix errorMsg();
     - Fix decimal button
-    - Fix KeyboardEvent Handler
-    - Fix backspace key
-    - Change CSS: .bttn {cursor: pointer; darken-on-hover; darken-more-and-animate-on-click}
+    - Change CSS: .bttn {smooth-text-decrease-on-click}
+    - Limit numDigits to max supported by JS
 */
 
 // View
@@ -108,33 +107,32 @@ function bttnHandler(val) {
 //TODO: Fix keypress listener. Change from onkeypress to onkeydown. Adjust keybinding keys. 
 //TODO: Change keybindings backspace key to ASCII value of backspace button. 
 //Keypress Listener
-// document.body.onkeypress = function(event) {
-//     var keyBindings = {
-//         '/': bttnHandler('/'),
-//         '*': bttnHandler('*'),
-//         '-': bttnHandler('-'),
-//         '+': bttnHandler('+'),
-//         '=': bttnHandler('='),
-//         'Decimal': bttnHandler('.'),
-//         0: bttnHandler('0'),
-//         1: bttnHandler('1'),
-//         2: bttnHandler('2'),
-//         3: bttnHandler('3'),
-//         4: bttnHandler('4'),
-//         5: bttnHandler('5'),
-//         6: bttnHandler('6'),
-//         7: bttnHandler('7'),
-//         8: bttnHandler('8'),
-//         9: bttnHandler('9'),
-//         backspace: bttnHandler('backspace')
-//     }
+document.body.onkeydown = function(event) {
+    var keyBindings = {
+        '/': '/',
+        '*': '*',
+        '-': '-',
+        '+': '+',
+        '=': '=',
+        '.': '.',
+        0: '0',
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
+        6: '6',
+        7: '7',
+        8: '8',
+        9: '9',
+        'Backspace': 'backspace', 
+        'Enter': 'equals'
+    }
 
-//     console.log('key: ' + event.key);
-
-//     if (keyBindings.hasOwnProperty(event.key)) {
-//         keyBindings[event.key];
-//     }
-// }
+    if (event.key && keyBindings.hasOwnProperty(event.key)) {
+        bttnHandler(keyBindings[event.key]);
+    }
+}
 
 //Button Click Listener
 document.body.onclick = function(event) {
@@ -152,25 +150,16 @@ document.body.onclick = function(event) {
         seven: '7',
         eight: '8',
         nine: '9',
-
-        //Changing the number
-        //Add to end of currentNum. Only allow once per currentNum. 
-        decimalPoint: '.',
-
-        //Operation btwn. two number
-        //Add symbol to equation, run parseFloat() on currentNum, 
-        //solve previous subproblem, update solution.  
+        decimalPoint: '.',  
         divide: '/',
         multiply: '*',
         subtract: '-',
         add: '+',
         equals: 'equals',
-
-        //Do stuff to currentNum
-        clear: 'clear', //equation = "", currentNumber = ""
-        percent: 'percent', //currentNum*100
-        squareRoot: 'sqrt', //Math.sqrt();
-        squared: 'squared', //currentNum*currentNum
+        clear: 'clear',
+        percent: 'percent',
+        squareRoot: 'sqrt',
+        squared: 'squared',
         backspace: 'backspace'
     }
 
@@ -294,9 +283,15 @@ function errorMsg(str) {
 //Zenscroll
 !function(t,e){"function"==typeof define&&define.amd?define([],e()):"object"==typeof module&&module.exports?module.exports=e():t.zenscroll=e()}(this,function(){"use strict";var t=function(t){return"getComputedStyle"in window&&"smooth"===window.getComputedStyle(t)["scroll-behavior"]};if("undefined"==typeof window||!("document"in window))return{};var e=function(e,n,o){n=n||999,o||0===o||(o=9);var i,r=function(t){i=t},c=document.documentElement,u=function(){return e?e.scrollTop:window.scrollY||c.scrollTop},l=function(){return e?Math.min(e.offsetHeight,window.innerHeight):window.innerHeight||c.clientHeight},a=function(t){return e?t.offsetTop:t.getBoundingClientRect().top+u()-c.offsetTop},s=function(){clearTimeout(i),r(0)},f=function(o,i,a){if(s(),t(e?e:document.body))(e||window).scrollTo(0,o),a&&a();else{var f=u(),d=Math.max(o,0)-f;i=i||Math.min(Math.abs(d),n);var h=(new Date).getTime();!function t(){r(setTimeout(function(){var n=Math.min(((new Date).getTime()-h)/i,1),o=Math.max(Math.floor(f+d*(n<.5?2*n*n:n*(4-2*n)-1)),0);e?e.scrollTop=o:window.scrollTo(0,o),n<1&&l()+o<(e||c).scrollHeight?t():(setTimeout(s,99),a&&a())},9))}()}},d=function(t,e,n){var i=a(t)-o;return f(i,e,n),i},h=function(t,e,n){var i=t.getBoundingClientRect().height,r=a(t),c=r+i,s=l(),h=u(),w=h+s;r-o<h||i+o>s?d(t,e,n):c+o>w?f(c-s+o,e,n):n&&n()},w=function(t,e,n,o){f(Math.max(a(t)-l()/2+(n||t.getBoundingClientRect().height/2),0),e,o)},m=function(t,e){t&&(n=t),(0===e||e)&&(o=e)};return{setup:m,to:d,toY:f,intoView:h,center:w,stop:s,moving:function(){return!!i},getY:u}},n=e();if("addEventListener"in window&&!t(document.body)&&!window.noZensmooth){"scrollRestoration"in history&&(history.scrollRestoration="manual",window.addEventListener("popstate",function(t){t.state&&t.state.scrollY&&n.toY(t.state.scrollY)},!1));var o=function(t,e){try{history.replaceState({scrollY:n.getY()},""),history.pushState({scrollY:e},"",t)}catch(t){}};window.addEventListener("click",function(t){for(var e=t.target;e&&"A"!==e.tagName;)e=e.parentNode;if(!(!e||1!==t.which||t.shiftKey||t.metaKey||t.ctrlKey||t.altKey)){var i=e.getAttribute("href")||"";if(0===i.indexOf("#"))if("#"===i)t.preventDefault(),n.toY(0),o(window.location.href.split("#")[0],0);else{var r=e.hash.substring(1),c=document.getElementById(r);c&&(t.preventDefault(),o("#"+r,n.to(c)))}}},!1)}return{createScroller:e,setup:n.setup,to:n.to,toY:n.toY,intoView:n.intoView,center:n.center,stop:n.stop,moving:n.moving}});
 
+var calc = document.getElementsByClassName('calculator')[0];
+
 window.onload = function() {
-  var calc = document.getElementsByClassName('calculator')[0];
   setTimeout(function() {
     zenscroll.center(calc, 250);
   }, 2000);
+};
+
+var logo = document.getElementsByClassName('logo')[0];
+logo.onclick = function() {
+  zenscroll.center(calc, 250);
 };
