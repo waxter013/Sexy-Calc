@@ -87,6 +87,8 @@ input {
     }
     .link:hover {
       color: white;
+      -moz-transition: color 1s;
+      -o-transition: color 1s;
       -webkit-transition: color 1s;
       transition: color 1s;
     }
@@ -237,14 +239,17 @@ input {
 }
 .bttn:active {
   color: black;
-  font-size: 0.5rem;
 }
+
 @media (min-width: 20em) {
   .calculator {
     .bttn {
       font-size: 1.6rem;
       // font-size: 4.75vw;
       min-height: 2.3rem;
+    }
+    .bttn:active {
+      font-size: 1.4rem;
     }
   }
 }
@@ -255,6 +260,9 @@ input {
       // font-size: 3.75vw;
       min-height: 2.4rem;
     }
+    .bttn:active {
+      font-size: 1.5rem;
+    }
   }
 }
 @media (min-width: 64em) {
@@ -263,6 +271,9 @@ input {
       font-size: 2.3rem;
       // font-size: 3.8vw;
       min-height: 3rem;
+    }
+    .bttn:active {
+      font-size: 2.1rem;
     }
   }
 }

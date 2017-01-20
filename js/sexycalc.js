@@ -12,11 +12,14 @@
     - Fix decimal button
     - Change CSS: .bttn {smooth-text-decrease-on-click}
     - Limit numDigits to max supported by JS
+    - anything * 0 doesn't work
 */
 
 // View
-var equationUI = document.getElementsByClassName('equation')[0];
-var solutionUI = document.getElementsByClassName('solution')[0];
+var logo = document.getElementsByClassName('logo')[0]; //loading div logo
+var calc = document.getElementsByClassName('calculator')[0]; //calculator div
+var equationUI = document.getElementsByClassName('equation')[0]; //display div equation
+var solutionUI = document.getElementsByClassName('solution')[0]; //display div solution
 
 // Model
 var equation = '', 
@@ -52,6 +55,7 @@ function bttnHandler(val) {
       if(val === '0') {
         if(previousVal === '/') {
           errorMsg('Cannot divide by zero');
+          return '';
         }
       }
       setSolution(Number(getSolution() + val));
@@ -61,8 +65,8 @@ function bttnHandler(val) {
     else if (isOperator(val)) {
       //Error Handling: Operating on an operator
       if(isOperator(previousVal)) {
-        setSolution(getSolution().toString().slice(0, -1));
         errorMsg("Cannot do " + "'" + previousVal + val + "'" + '. ');
+        setSolution(getSolution().toString().slice(0, -1));
       }
       //Set equation
       setEquation((numbers.length === 0)? getSolution() + val: getEquation() + getSolution() + val);
@@ -91,6 +95,10 @@ function bttnHandler(val) {
         setSolution(getSolution() * getSolution());
         previousVal = val;
     } else if (val === 'backspace') {
+        //If solution is empty, backspace equation
+        if(getSolution() === '') {
+          setEquation(getEquation().toString().slice(0, -1));
+        }
         setSolution(getSolution().toString().slice(0, -1));
         previousVal = val;
     } else if (val === 'equals') {
@@ -108,6 +116,8 @@ function bttnHandler(val) {
 //TODO: Change keybindings backspace key to ASCII value of backspace button. 
 //Keypress Listener
 document.body.onkeydown = function(event) {
+  event.stopPropagation();
+
     var keyBindings = {
         '/': '/',
         '*': '*',
@@ -126,48 +136,52 @@ document.body.onkeydown = function(event) {
         8: '8',
         9: '9',
         'Backspace': 'backspace', 
-        'Enter': 'equals'
+        'Enter': 'equals', 
+        'Clear': 'equals', 
+        ' ': 'equals', 
+        'Spacebar': 'equals'  
     }
 
     if (event.key && keyBindings.hasOwnProperty(event.key)) {
+        event.preventDefault();
         bttnHandler(keyBindings[event.key]);
     }
 }
 
 //Button Click Listener
 document.body.onclick = function(event) {
-    var currentElemName = event.target.getAttribute('name');
-    var buttonNames = {
-        //Changing the number
-        //If valid, append to  current number
-        zero: '0',
-        one: '1',
-        two: '2',
-        three: '3',
-        four: '4',
-        five: '5',
-        six: '6',
-        seven: '7',
-        eight: '8',
-        nine: '9',
-        decimalPoint: '.',  
-        divide: '/',
-        multiply: '*',
-        subtract: '-',
-        add: '+',
-        equals: 'equals',
-        clear: 'clear',
-        percent: 'percent',
-        squareRoot: 'sqrt',
-        squared: 'squared',
-        backspace: 'backspace'
-    }
+  event.stopPropagation();
 
-    //If a valid button (in buttonNames) was pressed, 
-    if (buttonNames.hasOwnProperty(currentElemName)) {
-        bttnHandler(buttonNames[currentElemName]);
-    }
-    event.stopPropagation();
+  var currentElemName = event.target.getAttribute('name');
+  var buttonNames = {
+      zero: '0',
+      one: '1',
+      two: '2',
+      three: '3',
+      four: '4',
+      five: '5',
+      six: '6',
+      seven: '7',
+      eight: '8',
+      nine: '9',
+      decimalPoint: '.',  
+      divide: '/',
+      multiply: '*',
+      subtract: '-',
+      add: '+',
+      equals: 'equals',
+      clear: 'clear',
+      percent: 'percent',
+      squareRoot: 'sqrt',
+      squared: 'squared',
+      backspace: 'backspace'
+  }
+
+  //If a valid button (in buttonNames) was pressed, 
+  if (buttonNames.hasOwnProperty(currentElemName)) {
+    event.preventDefault();
+    bttnHandler(buttonNames[currentElemName]);
+  }
 }
 
 //Solves an equation string, which is simply a lot of simple operations in one string
@@ -277,13 +291,14 @@ function isOperator(char) {
 function errorMsg(str) {
   var tempSolution = getSolution();
   //Do animation to temporarily show error
+  setEquation(' ');
+  setSolution(' ');
+  setEquation(str);
   setSolution(str);
 }
 
 //Zenscroll
 !function(t,e){"function"==typeof define&&define.amd?define([],e()):"object"==typeof module&&module.exports?module.exports=e():t.zenscroll=e()}(this,function(){"use strict";var t=function(t){return"getComputedStyle"in window&&"smooth"===window.getComputedStyle(t)["scroll-behavior"]};if("undefined"==typeof window||!("document"in window))return{};var e=function(e,n,o){n=n||999,o||0===o||(o=9);var i,r=function(t){i=t},c=document.documentElement,u=function(){return e?e.scrollTop:window.scrollY||c.scrollTop},l=function(){return e?Math.min(e.offsetHeight,window.innerHeight):window.innerHeight||c.clientHeight},a=function(t){return e?t.offsetTop:t.getBoundingClientRect().top+u()-c.offsetTop},s=function(){clearTimeout(i),r(0)},f=function(o,i,a){if(s(),t(e?e:document.body))(e||window).scrollTo(0,o),a&&a();else{var f=u(),d=Math.max(o,0)-f;i=i||Math.min(Math.abs(d),n);var h=(new Date).getTime();!function t(){r(setTimeout(function(){var n=Math.min(((new Date).getTime()-h)/i,1),o=Math.max(Math.floor(f+d*(n<.5?2*n*n:n*(4-2*n)-1)),0);e?e.scrollTop=o:window.scrollTo(0,o),n<1&&l()+o<(e||c).scrollHeight?t():(setTimeout(s,99),a&&a())},9))}()}},d=function(t,e,n){var i=a(t)-o;return f(i,e,n),i},h=function(t,e,n){var i=t.getBoundingClientRect().height,r=a(t),c=r+i,s=l(),h=u(),w=h+s;r-o<h||i+o>s?d(t,e,n):c+o>w?f(c-s+o,e,n):n&&n()},w=function(t,e,n,o){f(Math.max(a(t)-l()/2+(n||t.getBoundingClientRect().height/2),0),e,o)},m=function(t,e){t&&(n=t),(0===e||e)&&(o=e)};return{setup:m,to:d,toY:f,intoView:h,center:w,stop:s,moving:function(){return!!i},getY:u}},n=e();if("addEventListener"in window&&!t(document.body)&&!window.noZensmooth){"scrollRestoration"in history&&(history.scrollRestoration="manual",window.addEventListener("popstate",function(t){t.state&&t.state.scrollY&&n.toY(t.state.scrollY)},!1));var o=function(t,e){try{history.replaceState({scrollY:n.getY()},""),history.pushState({scrollY:e},"",t)}catch(t){}};window.addEventListener("click",function(t){for(var e=t.target;e&&"A"!==e.tagName;)e=e.parentNode;if(!(!e||1!==t.which||t.shiftKey||t.metaKey||t.ctrlKey||t.altKey)){var i=e.getAttribute("href")||"";if(0===i.indexOf("#"))if("#"===i)t.preventDefault(),n.toY(0),o(window.location.href.split("#")[0],0);else{var r=e.hash.substring(1),c=document.getElementById(r);c&&(t.preventDefault(),o("#"+r,n.to(c)))}}},!1)}return{createScroller:e,setup:n.setup,to:n.to,toY:n.toY,intoView:n.intoView,center:n.center,stop:n.stop,moving:n.moving}});
-
-var calc = document.getElementsByClassName('calculator')[0];
 
 window.onload = function() {
   setTimeout(function() {
@@ -291,7 +306,6 @@ window.onload = function() {
   }, 1500);
 };
 
-var logo = document.getElementsByClassName('logo')[0];
 logo.onclick = function() {
   zenscroll.center(calc, 250);
 };
