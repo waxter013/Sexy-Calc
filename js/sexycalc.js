@@ -26,7 +26,8 @@ var equation = '',
     solution = '', 
     numbers = [], 
     operators = [],
-    previousVal = '';
+    previousVal = '',
+    isErrorOngoing = false;
 
 /* Getters and Setters - Update Model and View Simultaneously*/
 function getEquation() {
@@ -46,8 +47,11 @@ function setSolution(val) {
 
 // Controller
 function bttnHandler(val) {
+    if(isErrorOngoing) {
+      return ''; //Do nothing
+    }
     //Handle digits
-    if (isNum(val)) {
+    else if (isNum(val)) {
       //If last input was an operator
       if(isOperator(previousVal)) {
         setSolution(''); //reset solution
@@ -65,9 +69,10 @@ function bttnHandler(val) {
     else if (isOperator(val)) {
       //Error Handling: Operating on an operator
       if(isOperator(previousVal)) {
-        errorMsg("Cannot do " + "'" + previousVal + val + "'" + '. ');
+        errorMsg("Cannot do two operators in a row. ");
         setSolution(getSolution().toString().slice(0, -1));
       }
+      else {
       //Set equation
       setEquation((numbers.length === 0)? getSolution() + val: getEquation() + getSolution() + val);
       //Prep for solving
@@ -76,6 +81,7 @@ function bttnHandler(val) {
       var result = solveEqn(numbers, operators); //solve eqn
       setSolution(result);
       previousVal = val;
+      }
     }
     //Handle modifier operations/special functions
     else if (val === '.') {
@@ -112,8 +118,6 @@ function bttnHandler(val) {
     }
 }
 
-//TODO: Fix keypress listener. Change from onkeypress to onkeydown. Adjust keybinding keys. 
-//TODO: Change keybindings backspace key to ASCII value of backspace button. 
 //Keypress Listener
 document.body.onkeydown = function(event) {
   event.stopPropagation();
@@ -147,7 +151,6 @@ document.body.onkeydown = function(event) {
         bttnHandler(keyBindings[event.key]);
     }
 }
-
 //Button Click Listener
 document.body.onclick = function(event) {
   event.stopPropagation();
@@ -267,8 +270,8 @@ function splitEqn(eqn) {
       }
     }
     else {
-      errorMsg('Unknown Error. Please contact my creator: deep@deepduggal.me');
-      return 'unknown error';
+      console.log('Unknown Error. Please contact my creator: deep@deepduggal.me');
+      return '';
     }
   }
 }
@@ -289,12 +292,19 @@ function isOperator(char) {
 }
 //Set equation to error message
 function errorMsg(str) {
-  var tempSolution = getSolution();
-  //Do animation to temporarily show error
-  setEquation(' ');
-  setSolution(' ');
-  setEquation(str);
+  isErrorOngoing = true;
+  var tempEquation = getEquation(),
+        tempSolution = getSolution();
+
+  setEquation('');
+  setSolution('');
   setSolution(str);
+
+  setTimeout(function() {
+    setEquation(tempEquation);
+    setSolution(tempSolution);
+    isErrorOngoing = false;
+  }, 3000);
 }
 
 //Zenscroll
