@@ -108,7 +108,8 @@ input {
      
     .display {  
       height: calc(100%);
-      width: 75%;
+      width: calc(75% - 2em);
+      padding: 0 1em 0 1em;
       float: left;
 
       .equation {

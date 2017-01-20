@@ -288,7 +288,7 @@ var calc = document.getElementsByClassName('calculator')[0];
 window.onload = function() {
   setTimeout(function() {
     zenscroll.center(calc, 250);
-  }, 2000);
+  }, 1500);
 };
 
 var logo = document.getElementsByClassName('logo')[0];
