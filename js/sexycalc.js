@@ -108,7 +108,7 @@ function bttnHandler(val) {
         setSolution(getSolution().toString().slice(0, -1));
         previousVal = val;
     } else if (val === 'equals') {
-        setSolution(''): //reset solution
+        setSolution(''); //reset solution
         setEquation(getEquation() + getSolution());
         //Prep for solving
         splitEqn(getEquation());
