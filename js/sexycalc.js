@@ -16,10 +16,10 @@
 */
 
 // View
-var logo = document.getElementsByClassName('logo')[0]; //loading div logo
-var calc = document.getElementsByClassName('calculator')[0]; //calculator div
-var equationUI = document.getElementsByClassName('equation')[0]; //display div equation
-var solutionUI = document.getElementsByClassName('solution')[0]; //display div solution
+var logo = document.getElementsByClassName('logo')[0], //loading div logo
+      calc = document.getElementsByClassName('calculator')[0], //calculator div
+      equationUI = document.getElementsByClassName('equation')[0], //display div equation
+      solutionUI = document.getElementsByClassName('solution')[0]; //display div solution
 
 // Model
 var equation = '', 
@@ -52,8 +52,8 @@ function bttnHandler(val) {
     }
     //Handle digits
     else if (isNum(val)) {
-      //If last input was an operator, equals, 
-      if(isOperator(previousVal) || previousVal === 'equals') {
+      //If last input was an operator
+      if(isOperator(previousVal)) {
         setSolution(''); //reset solution
       }
       if(val === '0') {
@@ -71,11 +71,12 @@ function bttnHandler(val) {
       if(isOperator(previousVal)) {
         errorMsg("Cannot do two operators in a row. ");
         setSolution(getSolution().toString().slice(0, -1));
-        return ;
       }
+      //Error Handling: Operation after equals
       else if(previousVal === 'equals') {
-        setSolution(''); //reset solution
+        setSolution('');
       }
+      else {
       //Set equation
       setEquation((numbers.length === 0)? getSolution() + val: getEquation() + getSolution() + val);
       //Prep for solving
@@ -84,6 +85,7 @@ function bttnHandler(val) {
       var result = solveEqn(numbers, operators); //solve eqn
       setSolution(result);
       previousVal = val;
+      }
     }
     //Handle modifier operations/special functions
     else if (val === '.') {
@@ -110,7 +112,7 @@ function bttnHandler(val) {
         setSolution(getSolution().toString().slice(0, -1));
         previousVal = val;
     } else if (val === 'equals') {
-        
+        setSolution(''); //reset solution
         setEquation(getEquation() + getSolution());
         //Prep for solving
         splitEqn(getEquation());
@@ -123,71 +125,71 @@ function bttnHandler(val) {
 
 //Keypress Listener
 document.body.onkeydown = function(event) {
-  event.stopPropagation();
+        event.stopPropagation();
 
-    var keyBindings = {
-        '/': '/',
-        '*': '*',
-        '-': '-',
-        '+': '+',
-        '=': '=',
-        '.': '.',
-        0: '0',
-        1: '1',
-        2: '2',
-        3: '3',
-        4: '4',
-        5: '5',
-        6: '6',
-        7: '7',
-        8: '8',
-        9: '9',
-        'Backspace': 'backspace', 
-        'Enter': 'equals', 
-        'Clear': 'equals', 
-        ' ': 'equals', 
-        'Spacebar': 'equals'  
-    }
+        var keyBindings = {
+            '/': '/',
+            '*': '*',
+            '-': '-',
+            '+': '+',
+            '=': '=',
+            '.': '.',
+            0: '0',
+            1: '1',
+            2: '2',
+            3: '3',
+            4: '4',
+            5: '5',
+            6: '6',
+            7: '7',
+            8: '8',
+            9: '9',
+            'Backspace': 'backspace',
+            'Enter': 'equals',
+            'Clear': 'equals',
+            ' ': 'equals',
+            'Spacebar': 'equals'
+        }
 
-    if (event.key && keyBindings.hasOwnProperty(event.key)) {
-        event.preventDefault();
-        bttnHandler(keyBindings[event.key]);
+        if (event.key && keyBindings.hasOwnProperty(event.key)) {
+            event.preventDefault();
+            bttnHandler(keyBindings[event.key]);
+        }
     }
-}
-//Button Click Listener
+    //Button Click Listener
 document.body.onclick = function(event) {
-  event.stopPropagation();
+    event.stopPropagation();
 
-  var currentElemName = event.target.getAttribute('name');
-  var buttonNames = {
-      zero: '0',
-      one: '1',
-      two: '2',
-      three: '3',
-      four: '4',
-      five: '5',
-      six: '6',
-      seven: '7',
-      eight: '8',
-      nine: '9',
-      decimalPoint: '.',  
-      divide: '/',
-      multiply: '*',
-      subtract: '-',
-      add: '+',
-      equals: 'equals',
-      clear: 'clear',
-      percent: 'percent',
-      squareRoot: 'sqrt',
-      squared: 'squared',
-      backspace: 'backspace'
-  }
+    var currentElemName = event.target.getAttribute('name');
+    var buttonNames = {
+        zero: '0',
+        one: '1',
+        two: '2',
+        three: '3',
+        four: '4',
+        five: '5',
+        six: '6',
+        seven: '7',
+        eight: '8',
+        nine: '9',
+        decimalPoint: '.',
+        divide: '/',
+        multiply: '*',
+        subtract: '-',
+        add: '+',
+        equals: 'equals',
+        clear: 'clear',
+        percent: 'percent',
+        squareRoot: 'sqrt',
+        squared: 'squared',
+        backspace: 'backspace'
+    }
 
-  //If a valid button (in buttonNames) was pressed, 
-  if (buttonNames.hasOwnProperty(currentElemName)) {
-    event.preventDefault();
-    bttnHandler(buttonNames[currentElemName]);
-  }
+    //If a valid button (in buttonNames) was pressed, 
+    if (buttonNames.hasOwnProperty(currentElemName)) {
+        event.preventDefault();
+        bttnHandler(buttonNames[currentElemName]);
+    }
 }
 
 //Solves an equation string, which is simply a lot of simple operations in one string
