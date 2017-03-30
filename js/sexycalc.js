@@ -50,7 +50,8 @@ function setSolution(val) {
 function bttnHandler(val) {
     if(isErrorOngoing) {
       if(val === 'equals') {
-        isErrorOngoing = true;
+        TweenMax.to(error, 0.3, {top: '-50%', display: 'none'}); //hide error
+        isErrorOngoing = false; //end error
       }
       return ''; //Do nothing
     }
@@ -117,6 +118,9 @@ function bttnHandler(val) {
         setSolution(getSolution().toString().slice(0, -1));
         previousVal = val;
     } else if (val === 'equals') {
+        if(previousVal === 'equals') {
+          return '';
+        }
         setEquation(getEquation() + getSolution());
         //Prep for solving
         splitEqn(getEquation());
@@ -301,22 +305,25 @@ function isOperator(char) {
 }
 //Set equation to error message
 function errorMsg(str) {
-  isErrorOngoing = true;
+  isErrorOngoing = true; //start error
   error.innerText = str;
 
-  TweenMax.to(error, 0.3, {top: '1rem', display: 'block'});
+  TweenMax.to(error, 0.3, {top: '1rem', display: 'block'}); //show error
 
+  //wait
   setTimeout(function() {
-    TweenMax.to(error, 0.2, {top: '-50%', display: 'none'});
-    isErrorOngoing = false;
+    if(isErrorOngoing) {
+      TweenMax.to(error, 0.3, {top: '-50%', display: 'none'}); //hide error
+      isErrorOngoing = false; //end error
+    }
   }, 3000);
 }
 
 //Onload animation
 window.addEventListener('load', function() {
-    TweenMax.to(window, 0.25, {delay: '1.5', scrollTo: window.innerHeight});
+    TweenMax.to(window, 0.3, {delay: '1.5', scrollTo: window.innerHeight});
 }, false);
 
 logo.addEventListener('click', function() {
-    TweenMax.to(window, 0.25, {scrollTo: window.innerHeight});
+    TweenMax.to(window, 0.3, {scrollTo: window.innerHeight});
 }, false);
