@@ -32,7 +32,7 @@
     <title>
       Sexy Calc - The galaxy's most beautiful, mobile-friendly online calculator.
     </title>
-    <meta content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1" name="viewport">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <link href="https://fonts.googleapis.com/css?family=Lato|Lobster|Roboto" rel="stylesheet">
     <link href="css/sexycalc.css" rel="stylesheet">
   </head>
@@ -47,6 +47,7 @@
       </div>
     </section>
     <section class="calculator">
+      <div class="error"></div>
       <div class="solutionContainer">
         <div class="display">
           <input class="equation" name="equation" readonly="readonly" type="text" value="">
@@ -93,6 +94,8 @@
         </div>
       </form>
     </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js" type="text/javascript"></script>
     <script src="js/sexycalc-dist.js" type="text/javascript"></script>
     <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-587ef328a237144a" type="text/javascript"></script>
   </body>

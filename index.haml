@@ -41,6 +41,7 @@
         By
         %a.link{:target=>"_blank", :href=>"http://deepduggal.me"} Deep Duggal
     %section.calculator
+      .error
       .solutionContainer
         .display
           %input.equation{:name => "equation", :type => "text", :value => "", :readonly => "readonly"}/
@@ -75,6 +76,7 @@
           %input.bttn{:name => "subtract", :type => "button", :value => "-"}/
           %input.bttn{:name => "add", :type => "button", :value => "+"}/
           %input.bttn{:name => "equals", :type => "button", :value => "="}/
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js", :type => "text/javascript"}
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js", :type => "text/javascript"}
     %script{:src => "js/sexycalc-dist.js", :type => "text/javascript"}
     %script{:src => "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-587ef328a237144a", :type => "text/javascript"}
-

@@ -6,6 +6,7 @@ $secondaryDark: #48544D;
 $secondaryDarker: #343434;
 $accent: #F48942;
 $accentDark: #F47D2E;
+$errorColor: #98E19A;
 
 $speed: 0.3s;
 
@@ -19,7 +20,6 @@ html, body {
   -moz-user-select: none;  
   -ms-user-select: none;  
 }
-
 .bttn {
   height: 100%;
   text-align: center;
@@ -28,14 +28,12 @@ html, body {
   color: white;
   cursor: pointer;
 }
-
 input {
   margin: 0;
   padding: 0;
   border: none;
   font-family: 'Lobster', Helvetica, Arial, sans-serif;
 }
-
 .loading {
   height: 100%;
   width: 100%;
@@ -102,6 +100,21 @@ input {
   color: white;
   font-weight: 700;
 
+  .error {
+    display: none;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    min-height: 1rem;
+    height: -50%;
+    width: 75%;
+    position: fixed;
+    top: 1rem;
+    left: 12.5%;
+    z-index: 1;
+    background: $errorColor;
+    color: white;
+    text-align: center;
+  }
   .solutionContainer {
     width: 100%;
     height: 10%;
@@ -238,7 +251,9 @@ input {
   }
 }
 .bttn:active {
-  color: black;
+  -webkit-box-shadow: inset 0px 0px 15px 3px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 0px 0px 15px 3px rgba(0,0,0,0.75);
+  box-shadow: inset 0px 0px 15px 3px rgba(0,0,0,0.75);
 }
 
 @media (min-width: 20em) {
