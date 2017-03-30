@@ -313,10 +313,10 @@ function errorMsg(str) {
 }
 
 //Onload animation
-window.onload = function() {
+window.addEventListener('load', function() {
     TweenMax.to(window, 0.25, {delay: '1.5', scrollTo: window.innerHeight});
-};
+}, false);
 
-logo.onclick = function() {
+logo.addEventListener('click', function() {
     TweenMax.to(window, 0.25, {scrollTo: window.innerHeight});
-};
+}, false);
