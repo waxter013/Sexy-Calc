@@ -73,12 +73,14 @@ input {
     bottom: 0.3rem;
     left: 0.3rem;
     animation: appear 2s;
+    -webkit-animation: appear 2s;
   }
   .credits {
     position: absolute; 
     bottom: 0.3rem;
     right: 0.3rem;
     animation: appear 2s;
+    -webkit-animation: appear 2s;
 
     .link {
       cursor: pointer;
@@ -93,7 +95,7 @@ input {
   }
 }
 
-.calculator {
+section.calculator {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -167,7 +169,7 @@ input {
       background-color: $mainDarker;
     }
   }
-  .buttonsContainer {
+  form.buttonsContainer {
     width: 100%;
     height: 90%;
     background-color: $secondaryDark;
@@ -248,12 +250,15 @@ input {
       }
     } 
   }
+  form.advancedButtonsContainer {
+
+  }
 }
+.moreButtons.bttn
 .bttn:active {
   -webkit-box-shadow: inset 0px 0px 15px 3px rgba(0,0,0,0.75);
   -moz-box-shadow: inset 0px 0px 15px 3px rgba(0,0,0,0.75);
   box-shadow: inset 0px 0px 15px 3px rgba(0,0,0,0.75);
-  font-size: 80%;
 }
 
 @media (min-width: 20rem) {
@@ -312,7 +317,6 @@ input {
     transform: scale3d(1, 1, 1);
   }
 }
-
 @keyframes pulse {
   from {
     -webkit-transform: scale3d(1, 1, 1);
@@ -329,7 +333,6 @@ input {
     transform: scale3d(1, 1, 1);
   }
 }
-
 @keyframes appear {
     from {opacity: 0;}
     to {opacity: 1;}

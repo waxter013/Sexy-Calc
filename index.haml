@@ -44,12 +44,12 @@
       .error
       .solutionContainer
         .display
-          %input.equation{:name => "equation", :type => "text", :value => "", :readonly => "readonly"}/
-          %input.solution{:name => "solution", :type => "text", :value => "0", :readonly => "readonly"}/
-        %input.backspaceButton.bttn{:name => "backspace", :type => "button", :value => "X"}/
+          %input.equation{:name => "equation", :type => "text", :value => "", :readonly => "readonly"}
+          %input.solution{:name => "solution", :type => "text", :value => "0", :readonly => "readonly"}
+        %input.backspaceButton.bttn{:name => "backspace", :type => "button", :value => "X"}
       %form.buttonsContainer
         .clearCol
-          %input.bttn{:name => "clear", :type => "button", :value => "Clear"}/
+          %input.bttn{:name => "clear", :type => "button", :value => "Clear"}
         .mainCol
           .mainRow.specialOperators
             %input.bttn{:name => "percent", :type => "button", :value => "%"}/
@@ -71,11 +71,12 @@
             %input.bttn{:name => "zero", :type => "button", :value => "0"}/
             %input.bttn{:name => "decimalPoint", :type => "button", :value => "."}/
         .operatorsCol
-          %input.bttn{:name => "divide", :type => "button", :value => "/"}/
-          %input.bttn{:name => "multiply", :type => "button", :value => "*"}/
-          %input.bttn{:name => "subtract", :type => "button", :value => "-"}/
-          %input.bttn{:name => "add", :type => "button", :value => "+"}/
-          %input.bttn{:name => "equals", :type => "button", :value => "="}/
+          %input.bttn{:name => "divide", :type => "button", :value => "/"}
+          %input.bttn{:name => "multiply", :type => "button", :value => "*"}
+          %input.bttn{:name => "subtract", :type => "button", :value => "-"}
+          %input.bttn{:name => "add", :type => "button", :value => "+"}
+          %input.bttn{:name => "equals", :type => "button", :value => "="}
+      / %form.advancedButtonsContainer
     %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/plugins/ScrollToPlugin.min.js", :type => "text/javascript"}
     %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js", :type => "text/javascript"}
     %script{:src => "js/sexycalc-dist.js", :type => "text/javascript"}

@@ -2,22 +2,22 @@
   Future Features: 
     - Store History! Users want this. 
     - Advanced functions (sin, cos, tan, +or-, log, ln, pi, parentheses, degrees, radians)
-    - Android Wear (and TV) Support
     - Swipe to change background/theme. 
     - Mortgage Calculator (and other specialty calcs. Maybe make ur own calc for commonly done equations?)
 */ 
 /*
   TODO: 
-    - Fix errorMsg();
     - Fix decimal button
-    - Change CSS: .bttn {smooth-text-decrease-on-click}
     - Limit numDigits to max supported by JS
     - anything * 0 doesn't work
 */
 
 // View
 var logo = document.getElementsByClassName('logo')[0], //loading div logo
-      error = document.getElementsByClassName('error')[0],
+      moreBttns = document.querySelector('moreBttns'),
+      normalBttns = document.forms[0],
+      advancedBttns = document.forms[1],
+      error = document.getElementsByClassName('error')[0], //error popup
       calc = document.getElementsByClassName('calculator')[0], //calculator div
       equationUI = document.getElementsByClassName('equation')[0], //display div equation
       solutionUI = document.getElementsByClassName('solution')[0]; //display div solution
@@ -49,8 +49,8 @@ function setSolution(val) {
 // Handle button input
 function bttnHandler(val) {
     if(isErrorOngoing) {
-      if(val === 'equals') {
-        TweenMax.to(error, 0.3, {top: '-50%', display: 'none'}); //hide error
+      if(val === 'clear') {
+        TweenMax.to(error, 0.3, {top: '-50%', ease: Back.easeIn.config(2), display: 'none'}); //hide error
         isErrorOngoing = false; //end error
       }
       return ''; //Do nothing
@@ -111,12 +111,20 @@ function bttnHandler(val) {
         setSolution(getSolution() * getSolution());
         previousVal = val;
     } else if (val === 'backspace') {
+        //Hide error msg if showing
+        if(isErrorOngoing && val === 'clear') {
+          TweenMax.to(error, 0.3, {top: '-50%', ease: Back.easeIn.config(2), display: 'none'}); //hide error
+          isErrorOngoing = false; //end error
+        }
         //If solution is empty, backspace equation
-        if(getSolution() === '') {
+        else if(getSolution() === '') {
           setEquation(getEquation().toString().slice(0, -1));
         }
-        setSolution(getSolution().toString().slice(0, -1));
-        previousVal = val;
+        //Otherwise backspace solution
+        else {
+          setSolution(getSolution().toString().slice(0, -1));
+        }
+        previousVal = getSolution().toString().substr(-1);
     } else if (val === 'equals') {
         if(previousVal === 'equals') {
           return '';
@@ -308,12 +316,12 @@ function errorMsg(str) {
   isErrorOngoing = true; //start error
   error.innerText = str;
 
-  TweenMax.to(error, 0.3, {top: '1rem', display: 'block'}); //show error
+  TweenMax.to(error, 0.5, {top: '1rem', ease: Back.easeOut.config(2), display: 'block'}); //show error
 
   //wait
   setTimeout(function() {
     if(isErrorOngoing) {
-      TweenMax.to(error, 0.3, {top: '-50%', display: 'none'}); //hide error
+      TweenMax.to(error, 0.3, {top: '-50%', ease: Back.easeIn.config(2), display: 'none'}); //hide error
       isErrorOngoing = false; //end error
     }
   }, 3000);
@@ -327,3 +335,18 @@ window.addEventListener('load', function() {
 logo.addEventListener('click', function() {
     TweenMax.to(window, 0.3, {scrollTo: window.innerHeight});
 }, false);
+
+// moreBttns.addEventListener('click', function() {
+//     //advanced to normal
+//     if(normalBttns.style.left === 0) {
+//       TweenMax.to(normalBttns, 0.3, {left: 0});
+//       TweenMax.to(advancedBttns, 0.3, {left: 0}); 
+//       TweenMax.to(moreBttns, 0.3, {left: 0, float: 'left'}); 
+//     }
+//     //normal to advanced
+//     else {
+//       TweenMax.to(normalBttns, 0.3, {left: 0});
+//       TweenMax.to(advancedBttns, 0.3, {left: 0}); 
+//       TweenMax.to(moreBttns, 0.3, {left: 0, float: 'left'}); 
+//     }
+// }, false);
