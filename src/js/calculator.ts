@@ -12,42 +12,45 @@
     - anything * 0 doesn't work
 */
 
+import { TweenMax } from 'gsap';
+import { showError, hideError } from './animations';
+import { isNum, isOperator, isDecimal } from './utils';
+
 // View
-var logo = document.getElementsByClassName('logo')[0], //loading div logo
-      moreBttns = document.querySelector('moreBttns'),
+var moreBttns = document.querySelector('moreBttns'),
       normalBttns = document.forms[0],
       advancedBttns = document.forms[1],
-      error = document.getElementsByClassName('error')[0], //error popup
-      calc = document.getElementsByClassName('calculator')[0], //calculator div
-      equationUI = document.getElementsByClassName('equation')[0], //display div equation
-      solutionUI = document.getElementsByClassName('solution')[0]; //display div solution
+      error = document.getElementsByClassName('error')[0], // error popup
+      calc = document.getElementsByClassName('calculator')[0], // calculator
+      equationUI = document.getElementsByClassName('equation')[0], // display equation
+      solutionUI = document.getElementsByClassName('solution')[0]; // display solution
 
 // Model
-var equation = '', 
-    solution = '', 
-    numbers = [], 
-    operators = [],
-    previousVal = '',
-    isErrorOngoing = false;
+var equation: string = '', 
+    solution: string = '', 
+    numbers: number[] = [], 
+    operators: string[] = [],
+    previousVal: string = '',
+    isErrorOngoing: boolean = false;
 
-/* Getters and Setters - Update Model and View Simultaneously*/
+/* Getters and Setters */
 function getEquation() {
-  return window.equation;
+  return equation;
 }
 function setEquation(val) {
-  window.equation = val;
-  window.equationUI.value = val;
+  equation = val;
+  equationUI.value = val;
 }
 function getSolution() {
-  return window.solution;
+  return solution;
 }
 function setSolution(val) {
-  window.solution = val;
-  window.solutionUI.value = val;
+  solution = val;
+  solutionUI.value = val;
 }
 
-// Handle button input
-function bttnHandler(val) {
+// Handle input
+function bttnHandler(val: string) {
     if(isErrorOngoing) {
       if(val === 'clear') {
         TweenMax.to(error, 0.3, {top: '-50%', ease: Back.easeIn.config(2), display: 'none'}); //hide error
@@ -83,14 +86,14 @@ function bttnHandler(val) {
         setSolution('');
       }
       else {
-      //Set equation
-      setEquation((numbers.length === 0)? getSolution() + val: getEquation() + getSolution() + val);
-      //Prep for solving
-      splitEqn(getEquation());
-      //Solve eqn
-      var result = solveEqn(numbers, operators); //solve eqn
-      setSolution(result);
-      previousVal = val;
+        //Set equation
+        setEquation((numbers.length === 0)? getSolution() + val: getEquation() + getSolution() + val);
+        //Prep for solving
+        splitEqn(getEquation());
+        //Solve eqn
+        var result = solveEqn(numbers, operators); //solve eqn
+        setSolution(result);
+        previousVal = val;
       }
     }
     //Handle modifier operations/special functions
@@ -139,77 +142,8 @@ function bttnHandler(val) {
     }
 }
 
-//Keypress Listener
-document.body.onkeydown = function(event) {
-        event.stopPropagation();
-
-        var keyBindings = {
-            '/': '/',
-            '*': '*',
-            '-': '-',
-            '+': '+',
-            '=': '=',
-            '.': '.',
-            0: '0',
-            1: '1',
-            2: '2',
-            3: '3',
-            4: '4',
-            5: '5',
-            6: '6',
-            7: '7',
-            8: '8',
-            9: '9',
-            'Backspace': 'backspace',
-            'Enter': 'equals',
-            'Clear': 'equals',
-            ' ': 'equals',
-            'Spacebar': 'equals'
-        }
-
-        if (event.key && keyBindings.hasOwnProperty(event.key)) {
-            event.preventDefault();
-            bttnHandler(keyBindings[event.key]);
-        }
-  }
-  //Button Click Listener
-document.body.onclick = function(event) {
-    event.stopPropagation();
-
-    var currentElemName = event.target.getAttribute('name');
-    var buttonNames = {
-        zero: '0',
-        one: '1',
-        two: '2',
-        three: '3',
-        four: '4',
-        five: '5',
-        six: '6',
-        seven: '7',
-        eight: '8',
-        nine: '9',
-        decimalPoint: '.',
-        divide: '/',
-        multiply: '*',
-        subtract: '-',
-        add: '+',
-        equals: 'equals',
-        clear: 'clear',
-        percent: 'percent',
-        squareRoot: 'sqrt',
-        squared: 'squared',
-        backspace: 'backspace'
-    }
-
-    //If a valid button (in buttonNames) was pressed, 
-    if (buttonNames.hasOwnProperty(currentElemName)) {
-        event.preventDefault();
-        bttnHandler(buttonNames[currentElemName]);
-    }
-}
-
-//Solves an equation string, which is simply a lot of simple operations in one string
-function solveEqn(nums, ops) {
+// Solves an equation string, which is simply a lot of simple operations in one string
+function solveEqn(nums: number[], ops: string[]) {
   var subResult; //Store the result of the previous Simple Operation
 
   subResult = solveSimple(nums[0], ops[0], nums[1]);
@@ -220,12 +154,12 @@ function solveEqn(nums, ops) {
   }
   return subResult;
 }
-//Does an operation between two numbers (a simple operation)
-function solveSimple(num1, oper, num2) {
+// Does an operation between two numbers (a simple operation)
+function solveSimple(num1: number, oper: string, num2: number) {
   num1 = Number(num1);
   num2 = Number(num2);
   // if there's no second number, return empty string
-  if(!num2)
+  if (!num2)
     return '';
   else {
     switch (oper) {
@@ -248,8 +182,9 @@ function solveSimple(num1, oper, num2) {
     }
   }
 }
-//Separates equation into numbers and operators
-function splitEqn(eqn) {
+
+// Separates equation into numbers and operators
+function splitEqn(eqn: string) {
   numbers = [];
   operators = [];
 
@@ -276,65 +211,131 @@ function splitEqn(eqn) {
     }
     //Handle Nums
     else if (isNum(char)) {
-      //Logical Error Handling - Divide by Zero
+      // Logical Error Handling - Divide by Zero
       if(char === '0' && eqn.charAt(i - 1) === '/') {
         errorMsg("Can't divide by zero. ");
         return "Can't divide by zero. ";
       }
-      //Add digit to end of number
+      // TODO: Add digit to end of number, if previous char was a number
       else if(numbers[operPos]) {
         numbers[operPos] += char;
       }
-      //Or add it if it doesn't exist
+      // Or add it if it doesn't exist
       else {
         numbers.push(char);
       }
     }
     else {
-      console.log('Unknown Error. Please contact my creator: deep@deepduggal.me');
+      errorMsg('Unknown Error in splitEqn().');
       return '';
     }
   }
 }
-function numOps(eqn) {
-  var num = 0;
-  for(var i = 0, len = eqn.length; i < len; i++) {
-    if(isOperator(eqn.charAt(i))) {
-      num++;
-    }
-  }
-  return num;
-}
-function isNum(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-function isOperator(char) {
-  return char === '*' || char === '/' || char === '+' || char === '-';
-}
-//Set equation to error message
-function errorMsg(str) {
-  isErrorOngoing = true; //start error
+
+// Set equation to error message
+// Dependencies: isErrorOngoing, error, TweenMax
+function errorMsg(str: string = 'An unknown error occurred. Try again?') {
+  isErrorOngoing = true;
   error.innerText = str;
 
-  TweenMax.to(error, 0.5, {top: '1rem', ease: Back.easeOut.config(2), display: 'block'}); //show error
+  showError(error);
 
-  //wait
-  setTimeout(function() {
-    if(isErrorOngoing) {
-      TweenMax.to(error, 0.3, {top: '-50%', ease: Back.easeIn.config(2), display: 'none'}); //hide error
-      isErrorOngoing = false; //end error
+  // wait before auto-clearing,
+  setTimeout(() => {
+    if (isErrorOngoing) {
+      hideError(error);
+      isErrorOngoing = false;
     }
   }, 3000);
 }
 
-//Onload animation
-window.addEventListener('load', function() {
-    TweenMax.to(window, 0.3, {delay: '1.5', scrollTo: window.innerHeight});
-}, false);
+/*****
+ * Handle User Input
+ *****/
 
-logo.addEventListener('click', function() {
-    TweenMax.to(window, 0.3, {scrollTo: window.innerHeight});
-}, false);
+function onKeyDown(event: KeyboardEvent) {
+  event.stopPropagation();
+  const { key } = event;
+  const keyBindings = {
+      '/': '/',
+      '*': '*',
+      '-': '-',
+      '+': '+',
+      '=': '=',
+      '.': '.',
+      0: '0',
+      1: '1',
+      2: '2',
+      3: '3',
+      4: '4',
+      5: '5',
+      6: '6',
+      7: '7',
+      8: '8',
+      9: '9',
+      'Backspace': 'backspace',
+      'Enter': 'equals',
+      'Clear': 'equals',
+      ' ': 'equals',
+      'Spacebar': 'equals'
+  }
+
+  if (key && keyBindings.hasOwnProperty(key)) {
+      event.preventDefault();
+      bttnHandler(keyBindings[key]);
+  }
+}
+function onClick(event: MouseEvent) {
+  event.stopPropagation();
+
+  const { target: clickedEl } = event;
+  var currentElemName = clickedEl.getAttribute('name');
+  const buttonNames = {
+      zero: '0',
+      one: '1',
+      two: '2',
+      three: '3',
+      four: '4',
+      five: '5',
+      six: '6',
+      seven: '7',
+      eight: '8',
+      nine: '9',
+      decimalPoint: '.',
+      divide: '/',
+      multiply: '*',
+      subtract: '-',
+      add: '+',
+      equals: 'equals',
+      clear: 'clear',
+      percent: 'percent',
+      squareRoot: 'sqrt',
+      squared: 'squared',
+      backspace: 'backspace'
+  }
+
+  // If a valid button (in buttonNames) was pressed, 
+  if (buttonNames.hasOwnProperty(currentElemName)) {
+      event.preventDefault();
+      bttnHandler(buttonNames[currentElemName]);
+  }
+}
+document.body.addEventListener('keydown', onKeyDown, false);
+document.body.addEventListener('click', onClick, false);
+
+
+/*****
+ * EVENT LISTENERS
+ *****/
+
+const logo = document.getElementsByClassName('logo')[0]; // loading logo
+
+// Scroll down on page load
+window.addEventListener('load', () => TweenMax.to(window, 0.3, {delay: 1.5, scrollTo: window.innerHeight}), false);
+
+// Click "Sexy Calc" logo to scroll down to calculator
+logo.addEventListener('click', () => TweenMax.to(window, 0.3, {scrollTo: window.innerHeight}), false);
+
 
 // moreBttns.addEventListener('click', function() {
 //     //advanced to normal
