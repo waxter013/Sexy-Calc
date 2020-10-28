@@ -1,11 +1,4 @@
 /*
-  Future Features: 
-    - Store History! Users want this. 
-    - Advanced functions (sin, cos, tan, +or-, log, ln, pi, parentheses, degrees, radians)
-    - Swipe to change background/theme. 
-    - Mortgage Calculator (and other specialty calcs. Maybe make ur own calc for commonly done equations?)
-*/ 
-/*
   TODO: 
     - Fix decimal button
     - Limit numDigits to max supported by JS
