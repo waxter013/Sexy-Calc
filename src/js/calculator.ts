@@ -1,6 +1,5 @@
 /*
   TODO: 
-    - Fix decimal button
     - Limit numDigits to max supported by JS
     - anything * 0 doesn't work
 */
@@ -21,23 +20,25 @@ var moreBttns = document.querySelector('moreBttns'),
 // Model
 var equation: string = '', 
     solution: string = '', 
-    numbers: number[] = [], 
+    numbers: string[] = [], 
     operators: string[] = [],
     previousVal: string = '',
     isErrorOngoing: boolean = false;
+
+
 
 /* Getters and Setters */
 function getEquation() {
   return equation;
 }
-function setEquation(val) {
+function setEquation(val: string) {
   equation = val;
   equationUI.value = val;
 }
 function getSolution() {
   return solution;
 }
-function setSolution(val) {
+function setSolution(val: string) {
   solution = val;
   solutionUI.value = val;
 }
@@ -178,45 +179,65 @@ function solveSimple(num1: number, oper: string, num2: number) {
 
 // Separates equation into numbers and operators
 function splitEqn(eqn: string) {
+  let wasDecimalFound = false;
+
+  // Reset previous equation's values
   numbers = [];
   operators = [];
 
-  //Check that first char is number, else error
-  if(isOperator(eqn.charAt(0))) {
+  // Check that first char is number, else error
+  if (isOperator(eqn.charAt(0))) {
     errorMsg("Must start with an operator");
-    return 'started with operator';
+    return;
   }
   for(var i = 0, operPos = 0, len = eqn.length, char = ''; i < len; i++) {
-    char = eqn.charAt(i); //Cache current char
+    char = eqn.charAt(i); // Store current char
 
-    //Handle Operators
+    // Handle Operators
     if (isOperator(char)) {
-      //Logical Error Handling - Operation on an operation
-      if(isOperator(eqn.charAt(i - 1))) {
+      // We can safely say the previous char isn't part of a decimal value
+      // bc an operator can't be in the middle of a valid number
+      if (wasDecimalFound) {
+        wasDecimalFound = false;
+      }
+
+      // Logical Error Handling - Operation on an operation
+      if (isOperator(eqn.charAt(i - 1))) {
         errorMsg("Can't do two operators in a row. ");
         return "Can't do two operators in a row. ";
       }
-      //If Error Free: Add operator to operators
+      // If Error Free: Add operator to operators
       else {
         operators.push(char);
       }
       operPos++;
     }
-    //Handle Nums
+    // Handle Nums
     else if (isNum(char)) {
       // Logical Error Handling - Divide by Zero
-      if(char === '0' && eqn.charAt(i - 1) === '/') {
+      if (char === '0' && eqn.charAt(i - 1) === '/') {
         errorMsg("Can't divide by zero. ");
         return "Can't divide by zero. ";
       }
+      else if (wasDecimalFound) {
+        // TODO
+        numbers[operPos] += char;
+      }
       // TODO: Add digit to end of number, if previous char was a number
-      else if(numbers[operPos]) {
+      else if (numbers[operPos]) {
         numbers[operPos] += char;
       }
       // Or add it if it doesn't exist
       else {
         numbers.push(char);
       }
+    }
+    else if (isDecimal(char)) {
+      // Continue looking for the rest of the decimal number
+      wasDecimalFound = true;
+      // Append decimal point to the number string
+      numbers[operPos] += char;
+      continue;
     }
     else {
       errorMsg('Unknown Error in splitEqn().');
