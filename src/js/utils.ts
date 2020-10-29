@@ -1,5 +1,5 @@
-export function isNum(n: number) {
-  return !isNaN(parseFloat(n.toString())) && isFinite(n);
+export function isNum(n: string) {
+  return !isNaN(parseFloat(n)) && isFinite(Number(n));
 }
 
 export function isOperator(char: string) {
