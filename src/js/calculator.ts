@@ -2,10 +2,11 @@
   TODO: 
     - Limit numDigits to max supported by JS
     - anything * 0 doesn't work
+    - Replace some uses of errorMsg() with notifyInvalidInput() to replace a loud popup with a subtle visual cue
 */
 
-import { TweenMax } from 'gsap';
-import { showError, hideError } from './animations';
+import { TweenMax, Back } from 'gsap';
+import { showError, hideError, scrollToCalculator } from './animations';
 import { isNum, isOperator, isDecimal } from './utils';
 
 // View
@@ -25,32 +26,30 @@ var equation: string = '',
     previousVal: string = '',
     isErrorOngoing: boolean = false;
 
-
-
 /* Getters and Setters */
-function getEquation() {
+export function getEquation() {
   return equation;
 }
-function setEquation(val: string) {
+export function setEquation(val: string) {
   equation = val;
   equationUI.value = val;
 }
-function getSolution() {
+export function getSolution() {
   return solution;
 }
-function setSolution(val: string) {
+export function setSolution(val: string) {
   solution = val;
   solutionUI.value = val;
 }
 
 // Handle input
-function bttnHandler(val: string) {
-    if(isErrorOngoing) {
-      if(val === 'clear') {
+function bttnHandler(val: string): void {
+    if (isErrorOngoing) {
+      if (val === 'clear') {
         TweenMax.to(error, 0.3, {top: '-50%', ease: Back.easeIn.config(2), display: 'none'}); //hide error
         isErrorOngoing = false; //end error
       }
-      return ''; //Do nothing
+      return;
     }
     //Handle digits
     else if (isNum(val)) {
@@ -61,7 +60,7 @@ function bttnHandler(val: string) {
       if(val === '0') {
         if(previousVal === '/') {
           errorMsg('Cannot divide by zero');
-          return '';
+          return;
         }
       }
       setSolution(Number(getSolution() + val));
@@ -124,7 +123,7 @@ function bttnHandler(val: string) {
         previousVal = getSolution().toString().substr(-1);
     } else if (val === 'equals') {
         if(previousVal === 'equals') {
-          return '';
+          return;
         }
         setEquation(getEquation() + getSolution());
         //Prep for solving
@@ -178,33 +177,36 @@ function solveSimple(num1: number, oper: string, num2: number) {
 }
 
 // Separates equation into numbers and operators
-function splitEqn(eqn: string) {
+function splitEqn(eqn: string): void {
   let wasDecimalFound = false;
 
   // Reset previous equation's values
   numbers = [];
   operators = [];
 
-  // Check that first char is number, else error
-  if (isOperator(eqn.charAt(0))) {
-    errorMsg("Must start with an operator");
-    return;
-  }
-  for(var i = 0, operPos = 0, len = eqn.length, char = ''; i < len; i++) {
+  // Iterate over characters in equation
+  for(let i = 0, operPos = 0, len = eqn.length, char = ''; i < len; i++) {
     char = eqn.charAt(i); // Store current char
 
     // Handle Operators
     if (isOperator(char)) {
+      // Check that first char is number, else error
+      if (i === 0) {
+        // TODO: errorMsg() is only called the first time here. Should be called after clearing too.
+        notifyInvalidInput();
+        errorMsg("Must start with an operator");
+        return;
+      }
       // We can safely say the previous char isn't part of a decimal value
       // bc an operator can't be in the middle of a valid number
-      if (wasDecimalFound) {
+      else if (wasDecimalFound) {
         wasDecimalFound = false;
       }
-
       // Logical Error Handling - Operation on an operation
-      if (isOperator(eqn.charAt(i - 1))) {
+      else if (isOperator(eqn.charAt(i - 1))) {
+        notifyInvalidInput();
         errorMsg("Can't do two operators in a row. ");
-        return "Can't do two operators in a row. ";
+        return;
       }
       // If Error Free: Add operator to operators
       else {
@@ -217,22 +219,26 @@ function splitEqn(eqn: string) {
       // Logical Error Handling - Divide by Zero
       if (char === '0' && eqn.charAt(i - 1) === '/') {
         errorMsg("Can't divide by zero. ");
-        return "Can't divide by zero. ";
+        return;
       }
-      else if (wasDecimalFound) {
-        // TODO
+      // If we encounter a number, either after a decimal point character is encountered
+      // or if the previous char was a number, append the digit to the most recent number
+      else if (wasDecimalFound || numbers[operPos]) {
         numbers[operPos] += char;
       }
-      // TODO: Add digit to end of number, if previous char was a number
-      else if (numbers[operPos]) {
-        numbers[operPos] += char;
-      }
-      // Or add it if it doesn't exist
+      // Or add a new number
       else {
         numbers.push(char);
       }
     }
     else if (isDecimal(char)) {
+      // Disallow numbers having mulitple decimal points
+      if (wasDecimalFound) {
+        debugger;
+        // notifyInvalidInput();
+        errorMsg("Cannot have two decimal points in a row");
+        return;
+      }
       // Continue looking for the rest of the decimal number
       wasDecimalFound = true;
       // Append decimal point to the number string
@@ -241,9 +247,27 @@ function splitEqn(eqn: string) {
     }
     else {
       errorMsg('Unknown Error in splitEqn().');
-      return '';
+      return;
     }
   }
+}
+
+// When the user tries to perform an invalid action, don't do it.
+// Instead, make the displayed values flash to subtly tell users "Invalid command."
+export const notifyInvalidInput = (): void => {
+  // Store old values
+  const equationCopy = getEquation();
+  const solutionCopy = getSolution();
+
+  // Set displays to blank
+  setEquation('');
+  setSolution('');
+
+  // Reset the old values
+  setTimeout(() => {
+    setEquation(equationCopy);
+    setSolution(solutionCopy);
+  }, 0.3);
 }
 
 // Set equation to error message
@@ -345,10 +369,10 @@ document.body.addEventListener('click', onClick, false);
 const logo = document.getElementsByClassName('logo')[0]; // loading logo
 
 // Scroll down on page load
-window.addEventListener('load', () => TweenMax.to(window, 0.3, {delay: 1.5, scrollTo: window.innerHeight}), false);
+window.addEventListener('load', () => scrollToCalculator(1.5), false);
 
 // Click "Sexy Calc" logo to scroll down to calculator
-logo.addEventListener('click', () => TweenMax.to(window, 0.3, {scrollTo: window.innerHeight}), false);
+logo.addEventListener('click', scrollToCalculator(), false);
 
 
 // moreBttns.addEventListener('click', function() {
