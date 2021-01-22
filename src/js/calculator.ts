@@ -5,7 +5,6 @@
     - Replace some uses of errorMsg() with notifyInvalidInput() to replace a loud popup with a subtle visual cue
 */
 
-import { TweenMax, Back } from "gsap";
 import { showError, hideError, scrollToCalculator } from "./animations";
 import { isNum, isOperator, isDecimal } from "./utils";
 
@@ -191,11 +190,7 @@ function solveEqn(nums: number[], ops: string[]) {
 function bttnHandler(val: string): void {
   if (isErrorOngoing) {
     if (val === "clear") {
-      TweenMax.to(error, 0.3, {
-        top: "-50%",
-        ease: Back.easeIn.config(2),
-        display: "none"
-      }); //hide error
+      hideError(error);
       isErrorOngoing = false; //end error
     }
     return;
@@ -261,11 +256,7 @@ function bttnHandler(val: string): void {
   } else if (val === "backspace") {
     //Hide error msg if showing
     if (isErrorOngoing && val === "clear") {
-      TweenMax.to(error, 0.3, {
-        top: "-50%",
-        ease: Back.easeIn.config(2),
-        display: "none"
-      }); //hide error
+      hideError(error);
       isErrorOngoing = false; //end error
     }
     //If solution is empty, backspace equation
