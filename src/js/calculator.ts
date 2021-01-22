@@ -19,12 +19,12 @@ var /* moreBttns = document.querySelector('moreBttns'),
   solutionUI: HTMLInputElement = document.getElementsByClassName("solution")[0]; // display solution
 
 // Model
-var equation: string = "",
-  solution: string = "",
-  numbers: string[] = [],
-  operators: string[] = [],
-  previousVal: string = "",
-  isErrorOngoing: boolean = false;
+var equation: string = '',
+    solution: string = '',
+    numbers: string[] = [],
+    operators: string[] = [],
+    previousVal: string = '',
+    isErrorOngoing: boolean = false;
 
 /* Getters and Setters */
 export function getEquation() {
