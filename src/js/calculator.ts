@@ -369,12 +369,11 @@ document.body.addEventListener("click", onClick, false);
  * EVENT LISTENERS
  *****/
 
-const logo = document.getElementsByClassName("logo")[0]; // loading logo
-
 // Scroll down on page load
 window.addEventListener("load", () => scrollToCalculator(1.5));
 
 // Click "Sexy Calc" logo to scroll down to calculator
+const logo = document.getElementsByClassName("logo")[0]; // loading logo
 logo.addEventListener("click", scrollToCalculator());
 
 // moreBttns.addEventListener('click', function() {
